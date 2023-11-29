@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>secondTask</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        padding: 1.5rem;
+        margin: 0;
+        background-color: #f4f4f4;
+        font-family: sans-serif;
+      }
+
+      .shadow {
+        box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.13);
+      }
+
+      .row {
+        border-radius: 1rem;
+        padding: 1rem 1.5rem;
+        background-color: #fff;
+        height: 250px;
+        margin-bottom: 100px;
+        position: relative;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .border {
+        border-radius: 0.5rem;
+        border-width: 10px;
+        border-style: solid;
+      }
+
+      .box {
+        position: relative;
+        width: 200px;
+        height: 200px;
+      }
+
+      .blue {
+        background-color: #c2d6f0;
+      }
+
+      .green {
+        background-color: #e1f7e8;
+      }
+
+      #target-1 {
+        border-color: #fbe8a4;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .target-2 {
+        border-color: #d5eeba;
+      }
+
+      #target-3,
+      #target-4 {
+        display: inline-block;
+      }
+
+      #target-3 {
+        border-color: #ffc298;
+      }
+
+      #target-4 {
+        border-color: #c4bdf4;
+      }
+
+      .fadeOut {
+        transition: opacity 1s ease-in-out;
+      }
+
+      .hidden {
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <h2>#target-1</h2>
+      <div class="row shadow">
+        <div id="target-1" class="box border shadow"></div>
+      </div>
+
+      <h2>.target-2</h2>
+      <div class="row shadow">
+        <div class="target-2 box border shadow"></div>
+      </div>
+
+      <h2>#target-3 / #target-4</h2>
+      <div class="row shadow">
+        <div id="target-3" class="box border shadow"></div>
+
+        <div id="target-4" class="box border shadow"></div>
+      </div>
+
+      <script>
+        function removeClass(element, className) {
+          element.classList.remove(className);
+        }
+
+        function addClass(element, className) {
+          element.classList.add(className);
+        }
+
+        function setStyles(element, styles) {
+          for (const [key, value] of Object.entries(styles)) {
+            element.style[key] = value;
+          }
+        }
+
+        const target1 = document.getElementById("target-1");
+        removeClass(target1, "border");
+
+        target1.style.left = "250px";
+
+        const target2 = document.querySelector(".target-2");
+        removeClass(target2, "border");
+        addClass(target2, "blue");
+
+        setStyles(target2, { left: "50px", marginTop: "-15px" });
+
+        const target3 = document.getElementById("target-3");
+        const target4 = document.getElementById("target-4");
+
+        target3.classList.add("fadeOut");
+        setTimeout(() => {
+          target3.classList.add("hidden");
+          addClass(target4, "green");
+        }, 1000);
+      </script>
+    </div>
+  </body>
+</html>
