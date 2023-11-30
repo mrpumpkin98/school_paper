@@ -13,11 +13,12 @@ export default function ThirdTask() {
   const userFormData = useRecoilValue(userFormState);
   const setLocalDataState = useSetRecoilState(localDataState);
   const localData = useRecoilValue(localDataState) as User[];
-  const [errorMessages, setErrorMessages] = useState<string[]>([]);
   const [nameErrorMessages, setNameErrorMessages] = useState<string[]>([]);
   const [passwordErrorMessages, setPasswordErrorMessages] = useState<string[]>(
     []
   );
+
+  // Confirm 버튼 비활성화 여부
   const isConfirmButtonDisabled =
     nameErrorMessages.some((errorMessage) => errorMessage !== "") ||
     passwordErrorMessages.some((errorMessage) => errorMessage !== "") ||
@@ -35,16 +36,11 @@ export default function ThirdTask() {
 
   const handleInputChange = (e: any, fieldName: string, index: number) => {
     const value = e.target.value;
-
-    // 현재 입력된 이름들을 배열로 가져옴
-    const names = userFormData.map((user) => user.name);
-
-    // 현재 입력된 이름 중에 중복되는 것이 있는지 확인
+    const names = userFormData.map((user) => user.name); // 현재 입력된 이름들을 배열로 가져옴
     const isNameDuplicate =
-      names.filter((name, i) => i !== index && name === value).length > 0;
-
-    // 이름이 3글자 미만인 경우 에러 메시지 표시
-    const isNameInvalid = fieldName === "name" && value.trim().length < 3;
+      names.filter((name, i) => i !== index && name === value).length > 0; // 현재 입력된 이름 중에 중복되는 것이 있는지 확인
+    const isNameInvalid = fieldName === "name" && value.trim().length < 3; // 이름이 3글자 미만인 경우 에러 메시지 표시
+    const isPasswordInvalid = value.trim().length < 6; // 비밀번호가 6글자 미만인 경우 에러 메시지 표시
 
     setUserFormState((prevUserFormState) => {
       const updatedUserFormState = [...prevUserFormState];
@@ -54,6 +50,7 @@ export default function ThirdTask() {
       };
       return updatedUserFormState;
     });
+
     // 이름과 관련된 에러 메시지 업데이트
     if (fieldName === "name") {
       setNameErrorMessages((prevErrorMessages) => {
@@ -71,7 +68,6 @@ export default function ThirdTask() {
 
     // 비밀번호와 관련된 에러 메시지 업데이트
     if (fieldName === "password") {
-      const isPasswordInvalid = value.trim().length < 6;
       setPasswordErrorMessages((prevErrorMessages) => {
         const newErrorMessages = [...prevErrorMessages];
         if (isPasswordInvalid) {
@@ -84,6 +80,7 @@ export default function ThirdTask() {
     }
   };
 
+  // 사용자 추가 함수
   const handleAddUser = () => {
     setUserFormState((prevUserFormState) => [
       ...prevUserFormState,
@@ -94,6 +91,7 @@ export default function ThirdTask() {
     ]);
   };
 
+  // 사용자 삭제 함수
   const handleRemoveUser = (index: number) => {
     setUserFormState((prevUserFormState) => {
       const updatedUserFormState = [...prevUserFormState];
@@ -102,8 +100,8 @@ export default function ThirdTask() {
     });
   };
 
+  // Confirm 버튼 클릭 시 호출되는 함수
   const handleConfirm = () => {
-    // 현재 사용자 데이터를 불러와서 새로운 사용자 추가 후 다시 저장
     const storedData = localStorage.getItem("userFormData");
     const parsedData = storedData ? JSON.parse(storedData) : [];
     const newData = [...parsedData, ...userFormData];
@@ -111,12 +109,13 @@ export default function ThirdTask() {
     setUserFormState([]);
   };
 
+  // Reset 버튼 클릭 시 호출되는 함수
   const handleReset = () => {
-    // 로컬스토리지에서 userFormData 삭제
     localStorage.removeItem("userFormData");
     setLocalDataState([]);
   };
 
+  // 로컬스토리지 변경 감지 및 업데이트 함수
   useEffect(() => {
     const storedData = localStorage.getItem("userFormData");
     const parsedData = storedData ? JSON.parse(storedData) : [];
