@@ -54,31 +54,34 @@ export default function ThirdTask() {
       };
       return updatedUserFormState;
     });
-    // 중복된 이름이 있는 경우 또는 유효하지 않은 이름 또는 비밀번호인 경우 에러 메시지 표시
-    setNameErrorMessages((prevErrorMessages) => {
-      const newErrorMessages = [...prevErrorMessages];
-      if (isNameDuplicate) {
-        newErrorMessages[index] = "이름이 중복됩니다.";
-      } else if (isNameInvalid) {
-        newErrorMessages[index] = "이름은 3글자 이상이어야 합니다.";
-      } else {
-        newErrorMessages[index] = ""; // 중복이 아니고 유효한 경우 에러 메시지 초기화
-      }
-      return newErrorMessages;
-    });
+    // 이름과 관련된 에러 메시지 업데이트
+    if (fieldName === "name") {
+      setNameErrorMessages((prevErrorMessages) => {
+        const newErrorMessages = [...prevErrorMessages];
+        if (isNameDuplicate) {
+          newErrorMessages[index] = "이름이 중복됩니다.";
+        } else if (isNameInvalid) {
+          newErrorMessages[index] = "이름은 3글자 이상이어야 합니다.";
+        } else {
+          newErrorMessages[index] = ""; // 중복이 아니고 유효한 경우 에러 메시지 초기화
+        }
+        return newErrorMessages;
+      });
+    }
 
-    // 비밀번호가 6글자 미만인 경우 에러 메시지 표시
-    const isPasswordInvalid =
-      fieldName === "password" && value.trim().length < 6;
-    setPasswordErrorMessages((prevErrorMessages) => {
-      const newErrorMessages = [...prevErrorMessages];
-      if (isPasswordInvalid) {
-        newErrorMessages[index] = "비밀번호는 6글자 이상이어야 합니다.";
-      } else {
-        newErrorMessages[index] = ""; // 유효한 경우 에러 메시지 초기화
-      }
-      return newErrorMessages;
-    });
+    // 비밀번호와 관련된 에러 메시지 업데이트
+    if (fieldName === "password") {
+      const isPasswordInvalid = value.trim().length < 6;
+      setPasswordErrorMessages((prevErrorMessages) => {
+        const newErrorMessages = [...prevErrorMessages];
+        if (isPasswordInvalid) {
+          newErrorMessages[index] = "비밀번호는 6글자 이상이어야 합니다.";
+        } else {
+          newErrorMessages[index] = ""; // 유효한 경우 에러 메시지 초기화
+        }
+        return newErrorMessages;
+      });
+    }
   };
 
   const handleAddUser = () => {
