@@ -22,11 +22,15 @@ export default function ThirdTask() {
     nameErrorMessages.some((errorMessage) => errorMessage !== "") ||
     passwordErrorMessages.some((errorMessage) => errorMessage !== "") ||
     userFormData.some(
-      (user) =>
+      (user, currentIndex) =>
         user.name.trim().length < 3 ||
         user.password.trim().length < 6 ||
         user.name.trim() === "" ||
-        user.password.trim() === ""
+        user.password.trim() === "" ||
+        userFormData.findIndex(
+          (otherUser, otherIndex) =>
+            currentIndex !== otherIndex && user.name === otherUser.name
+        ) !== -1
     );
 
   const handleInputChange = (e: any, fieldName: string, index: number) => {
