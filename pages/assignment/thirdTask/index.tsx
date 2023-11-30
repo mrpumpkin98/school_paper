@@ -39,7 +39,7 @@ export default function ThirdTask() {
     const isNameDuplicate =
       names.filter((name, i) => i !== index && name === value).length > 0;
 
-    // 이름이 3글자 미만 또는 비밀번호가 6글자 미만인 경우 에러 메시지 표시
+    // 이름이 3글자 미만인 경우 에러 메시지 표시
     const isNameInvalid = fieldName === "name" && value.trim().length < 3;
 
     setUserFormState((prevUserFormState) => {
@@ -108,6 +108,14 @@ export default function ThirdTask() {
     console.log(newData);
   };
 
+  const handleReset = () => {
+    // 로컬스토리지에서 userFormData 삭제
+    localStorage.removeItem("userFormData");
+
+    // Recoil 상태 초기화
+    setLocalDataState([]);
+  };
+
   useEffect(() => {
     const storedData = localStorage.getItem("userFormData");
     const parsedData = storedData ? JSON.parse(storedData) : [];
@@ -156,15 +164,16 @@ export default function ThirdTask() {
         >
           Confirm
         </ActionButton>
+        <ActionButton onClick={handleReset}>Reset</ActionButton>
       </ButtonContainer>
-      <div>
+      <UserListContainer>
         {localData.map((user, index) => (
-          <div key={index}>
-            <p>Name: {user.name}</p>
-            <p>Password: {user.password}</p>
-          </div>
+          <UserInfoWrapper key={index}>
+            <UserName>Name: {user.name}</UserName>
+            <UserPassword>Password: {user.password}</UserPassword>
+          </UserInfoWrapper>
         ))}
-      </div>
+      </UserListContainer>
     </Container>
   );
 }
@@ -219,7 +228,10 @@ const InputLabel = styled.p`
   font-weight: 500;
 `;
 
-const ErrorLabel = styled.p``;
+const ErrorLabel = styled.p`
+  font-size: 12px;
+  color: red;
+`;
 
 const InputField = styled.input`
   width: 100%;
@@ -244,4 +256,25 @@ const ActionButton = styled.button`
   padding: 10px 0px;
   cursor: pointer;
   margin-right: 10px;
+`;
+
+const UserListContainer = styled.div`
+  margin-top: 20px;
+`;
+
+const UserInfoWrapper = styled.div`
+  background-color: #f4f4f4;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+`;
+
+const UserName = styled.p`
+  font-weight: bold;
+  margin-bottom: 5px;
+`;
+
+const UserPassword = styled.p`
+  color: #555;
 `;
