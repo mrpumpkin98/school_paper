@@ -39,7 +39,6 @@ export default function FirstTask() {
       const largestProduct = findLargestProduct(numbersArray);
       setResult(largestProduct);
     } catch (error: any) {
-      console.error(error.message);
       setResult(error.message);
     }
   };

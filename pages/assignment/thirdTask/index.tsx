@@ -75,9 +75,6 @@ export default function ThirdTask() {
       }
       return newErrorMessages;
     });
-
-    console.log(userFormData);
-    console.log(errorMessages);
   };
 
   const handleAddUser = () => {
@@ -105,14 +102,11 @@ export default function ThirdTask() {
     const newData = [...parsedData, ...userFormData];
     localStorage.setItem("userFormData", JSON.stringify(newData));
     setUserFormState([]);
-    console.log(newData);
   };
 
   const handleReset = () => {
     // 로컬스토리지에서 userFormData 삭제
     localStorage.removeItem("userFormData");
-
-    // Recoil 상태 초기화
     setLocalDataState([]);
   };
 
